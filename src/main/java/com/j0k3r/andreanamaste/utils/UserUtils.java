@@ -1,0 +1,53 @@
+package com.j0k3r.andreanamaste.utils;
+
+import com.j0k3r.andreanamaste.http.request.UserRequest;
+import com.j0k3r.andreanamaste.http.response.UserResponse;
+import com.j0k3r.andreanamaste.http.response.UserResponseRegistry;
+import com.j0k3r.andreanamaste.security.enums.Role;
+import com.j0k3r.andreanamaste.security.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+@Component
+public class UserUtils {
+
+    @Autowired
+    private static PasswordEncoder passwordEncoder;
+
+    public static User toUser(UserRequest userRequest){
+        return User.builder()
+                .username(userRequest.getUsername())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .role(Role.ROLE_USER)
+                .email(userRequest.getEmail())
+                .names(userRequest.getNames())
+                .lastnames(userRequest.getLastnames())
+                .phone(userRequest.getPhone())
+                .build();
+    }
+
+    public static UserResponseRegistry toUserResponseRegistry(User user){
+        return UserResponseRegistry.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .names(user.getNames())
+                .lastnames(user.getLastnames())
+                .build();
+    }
+
+    public static UserResponse toUserResponse(User user) {
+        return UserResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .names(user.getNames())
+                .lastnames(user.getLastnames())
+                .phone(user.getPhone())
+                .imageUrl(user.getImageUrl())
+                .build();
+    }
+
+
+}

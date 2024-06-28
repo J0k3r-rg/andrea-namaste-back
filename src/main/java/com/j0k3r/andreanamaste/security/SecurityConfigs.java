@@ -26,7 +26,7 @@ public class SecurityConfigs {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(HttpMethod.POST,"/login").permitAll()
+                        req.requestMatchers(HttpMethod.POST,"/login","/api/v1/user/register").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
