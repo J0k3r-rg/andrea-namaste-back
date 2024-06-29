@@ -18,7 +18,9 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody @Valid UserRequest userRequest) {
-        return ResponseEntity.ok(userService.createUser(userRequest));
+        System.out.println("registerUser");
+        return ResponseEntity.ok("success");
+//        return ResponseEntity.ok(userService.createUser(userRequest));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -50,6 +52,24 @@ public class UserController {
     @PutMapping("/{id}/admin")
     public ResponseEntity<?> updateUserAdmin(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
         return ResponseEntity.ok(userService.updateUserAdmin(id, userRequest));
+    }
+
+    @PostMapping("/activate")
+    public ResponseEntity<?> activateUser(@RequestParam(required = true, name = "token") String token) {
+        userService.activateUser(token);
+        return ResponseEntity.ok("Success");
+    }
+
+    @GetMapping("/reset-password/{email}")
+    public ResponseEntity<?> restorePassword(@PathVariable String email) {
+        userService.sendRestorePassword(email);
+        return ResponseEntity.ok("Success");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestParam(required = true, name = "token") String token, @RequestBody String password) {
+        userService.resetPassword(token, password);
+        return ResponseEntity.ok("Success");
     }
 
 }

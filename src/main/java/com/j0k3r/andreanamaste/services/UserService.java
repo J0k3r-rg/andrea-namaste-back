@@ -81,4 +81,16 @@ public class UserService {
         user.setPhone(userRequest.getPhone());
         return UserUtils.toUserResponse(user);
     }
+
+    public void sendRestorePassword(String email) {
+
+    }
+
+    public void resetPassword(String token, String password) {
+
+    }
+
+    public void activateUser(String token) {
+        
+    }
 }
