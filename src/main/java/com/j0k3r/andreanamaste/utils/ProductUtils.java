@@ -3,10 +3,15 @@ package com.j0k3r.andreanamaste.utils;
 import com.j0k3r.andreanamaste.http.request.ProductRequest;
 import com.j0k3r.andreanamaste.http.response.ProductResponse;
 import com.j0k3r.andreanamaste.models.Product;
+import com.j0k3r.andreanamaste.repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductUtils {
+
+    @Autowired
+    private static ProductRepository productRepository;
 
     public static ProductResponse toProductResponse(Product product){
         return ProductResponse.builder()
@@ -27,6 +32,10 @@ public class ProductUtils {
                 .priceARS(productRequest.getPriceARS())
                 .priceUSD(productRequest.getPriceUSD())
                 .build();
+    }
+
+    public static Product toProductById(String id){
+        return productRepository.findById(id).orElse(null);
     }
 
 }
