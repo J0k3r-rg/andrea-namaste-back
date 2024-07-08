@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 @Data
 @NoArgsConstructor
@@ -49,6 +50,12 @@ public class User implements UserDetails {
     @Column(length = 15)
     private String phone;
 
+    @Column(length = 8)
+    @Builder.Default
+    private String codeActivate = String.valueOf(new Random().nextInt(10000000,99999999));
+
+    private String codeRestore;
+
     private String imageUrl;
 
     @Override
@@ -58,12 +65,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return this.username;
     }
 
     @Override

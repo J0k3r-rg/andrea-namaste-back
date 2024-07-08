@@ -31,6 +31,8 @@ public class Shift {
     @ManyToOne
     private Product product;
 
+    private String urlMeeting;
+
     @Builder.Default
     private Boolean isBooked = false;
 

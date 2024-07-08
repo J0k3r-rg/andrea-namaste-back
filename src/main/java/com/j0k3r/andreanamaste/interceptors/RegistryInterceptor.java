@@ -27,8 +27,6 @@ public class RegistryInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        System.out.println("Response Status: " + response.getStatus());
-        System.out.println("Request body: " + request.getAttribute("body"));
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
 }

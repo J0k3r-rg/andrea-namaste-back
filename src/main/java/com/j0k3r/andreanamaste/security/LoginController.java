@@ -1,9 +1,11 @@
 package com.j0k3r.andreanamaste.security;
 
+import com.j0k3r.andreanamaste.exceptions.UserException;
 import com.j0k3r.andreanamaste.security.http.UserRequestLogin;
 import com.j0k3r.andreanamaste.security.jwt.JwtService;
 import com.j0k3r.andreanamaste.security.models.User;
 import com.j0k3r.andreanamaste.security.repository.UserRepository;
+import com.j0k3r.andreanamaste.security.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,24 +33,22 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AuthenticationService authenticationService;
+
     @PostMapping
-    public ResponseEntity<?> login(@RequestBody @Valid UserRequestLogin userReq) {
-        Authentication authenticationRequest =
-                UsernamePasswordAuthenticationToken.unauthenticated(
-                        userReq.getUsername(),
-                        userReq.getPassword());
-        this.authenticationManager.authenticate(authenticationRequest).getCredentials();
+    public ResponseEntity<?> login(@RequestBody @Valid UserRequestLogin userReq) throws UserException {
+
         User user = this.userRepository.findByUsername(userReq.getUsername()).orElseThrow(
-                () -> new RuntimeException("User not found")
+                () -> new UserException("El usuario no se encuentra registrado en la base de datos",400)
         );
+        authenticationService.authenticate(userReq.getUsername(), userReq.getPassword());
+
         String token = this.jwtService.generateToken(userReq.getUsername());
         return ResponseEntity.ok(
                 Map.of(
                         "token", token,
-                        "username", user.getUsername(),
-                        "role", user.getAuthorities(),
-                        "id", user.getId(),
-                        "email", user.getEmail()
+                        "role", user.getRole()
                 )
         );
     }

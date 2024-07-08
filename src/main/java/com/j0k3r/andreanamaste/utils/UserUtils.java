@@ -5,20 +5,16 @@ import com.j0k3r.andreanamaste.http.response.UserResponse;
 import com.j0k3r.andreanamaste.http.response.UserResponseRegistry;
 import com.j0k3r.andreanamaste.security.enums.Role;
 import com.j0k3r.andreanamaste.security.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserUtils {
 
-    @Autowired
-    private static PasswordEncoder passwordEncoder;
-
     public static User toUser(UserRequest userRequest){
         return User.builder()
                 .username(userRequest.getUsername())
-                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .password(new BCryptPasswordEncoder().encode(userRequest.getPassword()))
                 .role(Role.ROLE_USER)
                 .email(userRequest.getEmail())
                 .names(userRequest.getNames())

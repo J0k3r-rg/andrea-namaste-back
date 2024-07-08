@@ -1,5 +1,6 @@
 package com.j0k3r.andreanamaste.services;
 
+import com.j0k3r.andreanamaste.exceptions.UserException;
 import com.j0k3r.andreanamaste.http.request.UserRequest;
 import com.j0k3r.andreanamaste.http.response.UserResponse;
 import com.j0k3r.andreanamaste.http.response.UserResponseRegistry;
@@ -7,11 +8,15 @@ import com.j0k3r.andreanamaste.security.jwt.JwtService;
 import com.j0k3r.andreanamaste.security.models.User;
 import com.j0k3r.andreanamaste.security.repository.UserRepository;
 import com.j0k3r.andreanamaste.utils.UserUtils;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,10 +28,14 @@ public class UserService {
     @Autowired
     private JwtService jwtService;
 
+    @Autowired
+    private JavaMailService javaMailService;
+
+
     @Transactional
-    public UserResponseRegistry createUser(UserRequest userRequest){
-        User user = UserUtils.toUser(userRequest);
-        user = userRepository.save(user);
+    public UserResponseRegistry createUser(UserRequest userRequest) throws MessagingException {
+        User user = userRepository.save(UserUtils.toUser(userRequest));
+        javaMailService.sendEmailByActivateUser(user);
         return UserUtils.toUserResponseRegistry(user);
     }
 
@@ -82,15 +91,30 @@ public class UserService {
         return UserUtils.toUserResponse(user);
     }
 
-    public void sendRestorePassword(String email) {
-
+    public void sendRestorePassword(String email) throws UserException {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new UserException("Email not registered",404)
+        );
+        javaMailService.sendEmailByRestorePassword(user);
     }
 
     public void resetPassword(String token, String password) {
 
     }
 
-    public void activateUser(String token) {
-        
+    @Transactional
+    public void activateUser(String token,String email) throws UserException {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new UserException("Email not registered", 404)
+        );
+        jwtService.validateAndGetSubjectActivateAccount(token, user);
+        user.setCodeActivate(null);
+        user.setEnable(true);
+    }
+
+    public User getUserByEmail(String email) throws UserException {
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new UserException("Email not registered", 404)
+        );
     }
 }

@@ -1,6 +1,7 @@
 package com.j0k3r.andreanamaste.security;
 
 import com.j0k3r.andreanamaste.security.jwt.JwtFilter;
+import com.j0k3r.andreanamaste.security.service.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ public class SecurityConfigs {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(HttpMethod.POST,"/login","/api/v1/user/register").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/v1/user/activate").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
@@ -38,11 +40,11 @@ public class SecurityConfigs {
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return  authenticationConfiguration.getAuthenticationManager();
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
