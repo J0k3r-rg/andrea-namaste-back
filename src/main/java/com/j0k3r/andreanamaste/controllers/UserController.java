@@ -57,7 +57,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}/admin")
     public ResponseEntity<?> updateUserAdmin(@PathVariable String id, @RequestBody @Valid UserRequest userRequest) {
         return ResponseEntity.ok(userService.updateUserAdmin(id, userRequest));

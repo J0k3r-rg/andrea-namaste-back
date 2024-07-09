@@ -21,6 +21,8 @@ public class ProductUtils {
                 .imageUrl(product.getImageUrl())
                 .priceARS(product.getPriceARS())
                 .priceUSD(product.getPriceUSD())
+                .createdAt(product.getCreatedAt())
+                .enabled(product.getEnabled())
                 .build();
     }
 

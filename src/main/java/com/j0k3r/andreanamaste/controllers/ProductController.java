@@ -4,6 +4,8 @@ import com.j0k3r.andreanamaste.http.request.ProductRequest;
 import com.j0k3r.andreanamaste.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +32,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllProducts(){
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<?> getAllProducts(@PageableDefault(size = 6, sort = {"createdAt"}) Pageable pageable){
+        return ResponseEntity.ok(productService.getAllProducts(pageable));
     }
 
     @DeleteMapping("/{id}")

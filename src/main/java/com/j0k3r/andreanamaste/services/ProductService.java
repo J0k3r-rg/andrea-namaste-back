@@ -5,10 +5,11 @@ import com.j0k3r.andreanamaste.http.response.ProductResponse;
 import com.j0k3r.andreanamaste.models.Product;
 import com.j0k3r.andreanamaste.repositories.ProductRepository;
 import com.j0k3r.andreanamaste.utils.ProductUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProductService {
@@ -16,6 +17,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Transactional
     public ProductResponse createProduct(ProductRequest productRequest){
         Product product = ProductUtils.toProduct(productRequest);
         productRepository.save(product);
@@ -29,12 +31,11 @@ public class ProductService {
         return ProductUtils.toProductResponse(product);
     }
 
-    public List<ProductResponse> getAllProducts(){
-        return productRepository.findAll().stream()
-                .map(ProductUtils::toProductResponse)
-                .toList();
+    public Page<ProductResponse> getAllProducts(Pageable pageable){
+        return productRepository.findAll(pageable).map(ProductUtils::toProductResponse);
     }
 
+    @Transactional
     public ProductResponse updateProduct(String id, ProductRequest productRequest){
         Product product = productRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Product not found with id: " + id)
@@ -47,6 +48,7 @@ public class ProductService {
         return ProductUtils.toProductResponse(product);
     }
 
+    @Transactional
     public void disableProduct(String id){
         Product product = productRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Product not found with id: " + id)
@@ -54,6 +56,7 @@ public class ProductService {
         productRepository.findById(id).ifPresent(product::disable);
     }
 
+    @Transactional
     public void enableProduct(String id){
         Product product = productRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Product not found with id: " + id)

@@ -9,6 +9,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +34,11 @@ public class Product {
 
     private Double priceUSD;
 
-    private Boolean enabled;
+    @Builder.Default
+    private Boolean enabled = true;
+
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public void disable(Product product) {
         product.enabled = false;

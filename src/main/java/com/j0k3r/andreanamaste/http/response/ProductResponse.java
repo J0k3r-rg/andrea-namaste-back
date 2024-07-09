@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,4 +25,8 @@ public class ProductResponse {
     private Double priceARS;
 
     private Double priceUSD;
+
+    private LocalDateTime createdAt;
+
+    private Boolean enabled;
 }
