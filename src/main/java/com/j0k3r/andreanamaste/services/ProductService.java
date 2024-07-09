@@ -64,4 +64,7 @@ public class ProductService {
         productRepository.findById(id).ifPresent(product::enable);
     }
 
+    public Page<Product> getAllProductsClient(Pageable pageable) {
+        return productRepository.findByEnabled(true, pageable);
+    }
 }
