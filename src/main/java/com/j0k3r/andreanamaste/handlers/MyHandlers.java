@@ -1,6 +1,7 @@
 package com.j0k3r.andreanamaste.handlers;
 
 import com.j0k3r.andreanamaste.exceptions.ProfileItemException;
+import com.j0k3r.andreanamaste.exceptions.ShiftException;
 import com.j0k3r.andreanamaste.exceptions.UserException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,6 +28,16 @@ public class MyHandlers {
                 Map.of(
                         "message", ex.getMessage(),
                         "status", ex.getStatus(),
+                        "error", "Bad Request")
+        );
+    }
+
+    @ExceptionHandler(ShiftException.class)
+    public ResponseEntity<?> shiftHandlerException(ShiftException ex){
+        return ResponseEntity.status(ex.getCode()).body(
+                Map.of(
+                        "message", ex.getMessage(),
+                        "status", ex.getCode(),
                         "error", "Bad Request")
         );
     }

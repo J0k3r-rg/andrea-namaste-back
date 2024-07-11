@@ -20,6 +20,4 @@ public class ShiftResponse {
 
     private LocalTime hour;
 
-    private ProductResponse product;
-
 }

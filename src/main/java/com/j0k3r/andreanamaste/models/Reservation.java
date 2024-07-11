@@ -1,10 +1,7 @@
 package com.j0k3r.andreanamaste.models;
 
 import com.j0k3r.andreanamaste.security.models.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,16 +20,16 @@ public class Reservation {
     @UuidGenerator
     private String id;
 
-    private User user;
-
     @OneToOne
     private Shift shift;
 
-    private Boolean isConfirmed;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Product product;
 
-    private Boolean isCancelled;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
-    private Boolean isAttended;
+    private String urlMeet;
 
     private Boolean isPaid;
     

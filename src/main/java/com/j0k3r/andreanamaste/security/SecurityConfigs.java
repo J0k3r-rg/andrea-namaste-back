@@ -27,11 +27,14 @@ public class SecurityConfigs {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(HttpMethod.POST,"/login","/api/v1/user/register").permitAll()
+                        req.requestMatchers(HttpMethod.POST,
+                                        "/login","/api/v1/user/register"
+                                ).permitAll()
                                 .requestMatchers(HttpMethod.GET,
                                         "/api/v1/user/activate",
                                         "/api/v1/products/all",
-                                        "/api/v1/profile/admin/item/**"
+                                        "/api/v1/profile/admin/item/**",
+                                        "/api/v1/shift"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 )

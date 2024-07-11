@@ -1,5 +1,6 @@
 package com.j0k3r.andreanamaste.http.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,10 +15,10 @@ import java.time.LocalTime;
 @Builder
 public class ShiftRequest {
 
+    @NotNull
     private LocalDate date;
 
+    @NotNull
     private LocalTime hour;
-
-    private String idProduct;
 
 }

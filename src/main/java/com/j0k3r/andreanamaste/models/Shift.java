@@ -28,11 +28,6 @@ public class Shift {
     @Temporal(TemporalType.TIME)
     private LocalTime hour;
 
-    @ManyToOne
-    private Product product;
-
-    private String urlMeeting;
-
     @Builder.Default
     private Boolean isBooked = false;
 

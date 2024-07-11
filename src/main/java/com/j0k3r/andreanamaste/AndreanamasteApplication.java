@@ -125,28 +125,28 @@ public class AndreanamasteApplication implements CommandLineRunner {
 		profileItemRepository.save(
 				ProfileItem.builder()
 						.name("whatsapp")
-						.body("link")
+						.body("2966555555")
 						.build()
 		);
 
 		profileItemRepository.save(
 				ProfileItem.builder()
 						.name("facebook")
-						.body("link")
+						.body("https://www.facebook.com/")
 						.build()
 		);
 
 		profileItemRepository.save(
 				ProfileItem.builder()
 						.name("instagram")
-						.body("link")
+						.body("https://www.instagram.com/")
 						.build()
 		);
 
 		profileItemRepository.save(
 				ProfileItem.builder()
 						.name("twitter")
-						.body("link")
+						.body(null)
 						.build()
 		);
 

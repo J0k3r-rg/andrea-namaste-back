@@ -13,7 +13,6 @@ public class ShiftUtils {
                 .id(shift.getId())
                 .date(shift.getDate())
                 .hour(shift.getHour())
-                .product(shift.getProduct() != null ? ProductUtils.toProductResponse(shift.getProduct()) : null)
                 .build();
     }
 
@@ -21,7 +20,6 @@ public class ShiftUtils {
         return Shift.builder()
                 .date(shiftRequest.getDate())
                 .hour(shiftRequest.getHour())
-                .product(shiftRequest.getIdProduct() != null ? ProductUtils.toProductById(shiftRequest.getIdProduct()) : null)
                 .build();
     }
 
