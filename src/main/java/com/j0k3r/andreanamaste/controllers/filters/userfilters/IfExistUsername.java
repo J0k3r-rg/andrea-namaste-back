@@ -15,7 +15,7 @@ public class IfExistUsername implements UserValidation{
     @Override
     public void validate(UserRequest user) throws UserException {
         if(userRepository.existsByUsername(user.getUsername())){
-            throw new UserException("Username already exists",400);
+            throw new UserException("El nombre de usuario ya se encuentra registrado",400);
         }
     }
 }

@@ -15,7 +15,7 @@ public class IfExistEmail implements UserValidation{
     @Override
     public void validate(UserRequest user) throws UserException {
         if(userRepository.existsByEmail(user.getEmail())){
-            throw new UserException("Email already exists",400);
+            throw new UserException("El email ya se encuentra registrado",400);
         }
     }
 }

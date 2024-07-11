@@ -42,6 +42,9 @@ public class LoginController {
         User user = this.userRepository.findByUsername(userReq.getUsername()).orElseThrow(
                 () -> new UserException("El usuario no se encuentra registrado en la base de datos",400)
         );
+
+        if (!user.isEnable())
+            throw new UserException("El usuario no se encuentra habilitado",400);
         authenticationService.authenticate(userReq.getUsername(), userReq.getPassword());
 
         String token = this.jwtService.generateToken(userReq.getUsername());

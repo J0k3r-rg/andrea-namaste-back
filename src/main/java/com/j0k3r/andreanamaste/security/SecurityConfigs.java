@@ -30,7 +30,8 @@ public class SecurityConfigs {
                         req.requestMatchers(HttpMethod.POST,"/login","/api/v1/user/register").permitAll()
                                 .requestMatchers(HttpMethod.GET,
                                         "/api/v1/user/activate",
-                                        "/api/v1/products/all"
+                                        "/api/v1/products/all",
+                                        "/api/v1/profile/admin/item/**"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 )
