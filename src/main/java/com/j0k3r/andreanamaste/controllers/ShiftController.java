@@ -9,6 +9,8 @@ import com.j0k3r.andreanamaste.http.request.ShiftRequest;
 import com.j0k3r.andreanamaste.services.ShiftService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -49,9 +51,25 @@ public class ShiftController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin")
-    public ResponseEntity<?> getShifts() {
-        return ResponseEntity.ok(shiftService.getAllShifts());
+    public ResponseEntity<?> getShifts(@PageableDefault(sort = {"date","hour"}) Pageable pageable) {
+        return ResponseEntity.ok(shiftService.getAllShifts(pageable));
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin/date")
+    public ResponseEntity<?> getShiftsByDateAdmin(
+            @PageableDefault(sort = {"date","hour"}) Pageable pageable,
+            @RequestParam(required = false) LocalDate date,
+            @RequestParam(required = false) Boolean booked) {
+        if(booked != null && date != null) {
+            return ResponseEntity.ok(shiftService.getAllShifts(date, booked, pageable));
+        }
+        if(booked != null) {
+            return ResponseEntity.ok(shiftService.getAllShifts(booked, pageable));
+        }
+        return ResponseEntity.ok(shiftService.getAllShifts(date,pageable));
+    }
+
 
     @GetMapping
     public ResponseEntity<?> getShiftsByUser(@RequestBody DateRequest date) {

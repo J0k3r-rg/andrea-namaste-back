@@ -20,4 +20,5 @@ public class ShiftResponse {
 
     private LocalTime hour;
 
+    private boolean isBooked;
 }

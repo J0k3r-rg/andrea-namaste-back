@@ -9,6 +9,8 @@ import com.j0k3r.andreanamaste.repositories.ShiftRepository;
 import com.j0k3r.andreanamaste.utils.ShiftUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,8 +23,20 @@ public class ShiftService {
     @Autowired
     private ShiftRepository shiftRepository;
 
-    public List<ShiftResponse> getAllShifts(){
-        return shiftRepository.findAll().stream().map(ShiftUtils::toShiftResponse).toList();
+    public Page<ShiftResponse> getAllShifts(Pageable pageable){
+        return shiftRepository.findAll(pageable).map(ShiftUtils::toShiftResponse);
+    }
+
+    public Page<ShiftResponse> getAllShifts(Boolean booked, Pageable pageable){
+        return shiftRepository.findByIsBooked(booked, pageable).map(ShiftUtils::toShiftResponse);
+    }
+
+    public Page<ShiftResponse> getAllShifts(LocalDate date, Pageable pageable){
+        return shiftRepository.findByDate(date,pageable).map(ShiftUtils::toShiftResponse);
+    }
+
+    public Page<ShiftResponse> getAllShifts(LocalDate date, Boolean isBooked, Pageable pageable){
+        return shiftRepository.findByDateAndIsBooked(date,isBooked,pageable).map(ShiftUtils::toShiftResponse);
     }
 
     public List<ShiftResponse> getShiftsByDateFree(LocalDate date){
@@ -31,7 +45,7 @@ public class ShiftService {
 
     @Transactional
     public String createShiftRange(ShiftCreateRange shiftCreateRange) {
-        for(int i = shiftCreateRange.getStart(); i < shiftCreateRange.getEnd(); i++){
+        for(int i = shiftCreateRange.getStart(); i < shiftCreateRange.getEnd()+1; i++){
             if(shiftRepository.findByDateAndHour(shiftCreateRange.getDate(), LocalTime.of(i, 0)).isPresent())
                 continue;
             shiftRepository.save(

@@ -13,6 +13,7 @@ public class ShiftUtils {
                 .id(shift.getId())
                 .date(shift.getDate())
                 .hour(shift.getHour())
+                .isBooked(shift.getIsBooked())
                 .build();
     }
 
