@@ -60,4 +60,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProductsClient(pageable));
     }
 
+    @GetMapping("/id")
+    public ResponseEntity<?> getProductByIdClient(@RequestParam String id){
+        return ResponseEntity.ok(productService.getProductByIdClient(id));
+    }
+
 }

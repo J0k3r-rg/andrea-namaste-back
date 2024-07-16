@@ -29,8 +29,10 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    private String urlMeet;
+    @Builder.Default
+    private String urlMeet = "";
 
-    private Boolean isPaid;
+    @Builder.Default
+    private Boolean isPaid = false;
     
 }

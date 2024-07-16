@@ -50,6 +50,12 @@ public class ShiftController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<?> getShift(@PathVariable String id) throws ShiftException {
+        return ResponseEntity.ok(shiftService.getShiftById(id));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin")
     public ResponseEntity<?> getShifts(@PageableDefault(sort = {"date","hour"}) Pageable pageable) {
         return ResponseEntity.ok(shiftService.getAllShifts(pageable));
@@ -71,9 +77,25 @@ public class ShiftController {
     }
 
 
-    @GetMapping
-    public ResponseEntity<?> getShiftsByUser(@RequestBody DateRequest date) {
-        return ResponseEntity.ok(shiftService.getShiftsByDateFree(date.getDate()));
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/admin/{id}")
+    public ResponseEntity<?> deleteShift(@PathVariable String id) throws ShiftException {
+        shiftService.deleteShift(id);
+        return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/admin/{id}")
+    public ResponseEntity<?> updateShift(@PathVariable String id, @RequestBody @Valid ShiftRequest shiftRequest) throws ShiftException {
+        for (ShiftValidation shiftValidation : shiftValidations) {
+            shiftValidation.validate(shiftRequest);
+        }
+        return ResponseEntity.ok(shiftService.updateShift(id, shiftRequest));
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping
+    public ResponseEntity<?> getShiftsByUser(@RequestParam LocalDate date) {
+        return ResponseEntity.ok(shiftService.getShiftsByDateFree(date));
+    }
 }

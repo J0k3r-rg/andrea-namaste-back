@@ -67,4 +67,12 @@ public class ProductService {
     public Page<Product> getAllProductsClient(Pageable pageable) {
         return productRepository.findByEnabled(true, pageable);
     }
+
+    public ProductResponse getProductByIdClient(String id) {
+        return ProductUtils.toProductResponse(
+                productRepository.findById(id).orElseThrow(
+                        () -> new RuntimeException("Product not found with id: " + id)
+                )
+        );
+    }
 }

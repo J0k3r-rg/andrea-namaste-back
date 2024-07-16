@@ -34,7 +34,8 @@ public class SecurityConfigs {
                                         "/api/v1/user/activate",
                                         "/api/v1/products/all",
                                         "/api/v1/profile/admin/item/**",
-                                        "/api/v1/shift"
+                                        "/api/v1/shift",
+                                        "/api/v1/products/id"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 )

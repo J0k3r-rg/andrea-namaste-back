@@ -70,4 +70,31 @@ public class ShiftService {
          return ShiftUtils.toShiftResponse(shift);
     }
 
+    @Transactional
+    public void deleteShift(String id) throws ShiftException {
+        if (!shiftRepository.existsById(id))
+            throw new ShiftException("El turno no existe", 400);
+        if (shiftRepository.findById(id).get().getIsBooked())
+            throw new ShiftException("El turno ya se encuentra reservado", 400);
+        shiftRepository.deleteById(id);
+    }
+
+    @Transactional
+    public ShiftResponse updateShift(String id, ShiftRequest shiftRequest) throws ShiftException {
+        if(shiftRepository.findByDateAndHour(shiftRequest.getDate(), shiftRequest.getHour()).isPresent())
+            throw new ShiftException("El turno ya se encuentra creado",400);
+        Shift shift = shiftRepository.findById(id).orElse(null);
+        if (shift == null)
+            throw new ShiftException("El turno no existe", 400);
+        shift.setDate(shiftRequest.getDate());
+        shift.setHour(shiftRequest.getHour());
+        return ShiftUtils.toShiftResponse(shiftRepository.save(shift));
+    }
+
+    public ShiftResponse getShiftById(String id) throws ShiftException {
+        Shift shift = shiftRepository.findById(id).orElse(null);
+        if (shift == null)
+            throw new ShiftException("El turno no existe", 400);
+        return ShiftUtils.toShiftResponse(shift);
+    }
 }
