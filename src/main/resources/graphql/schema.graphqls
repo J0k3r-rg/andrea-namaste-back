@@ -1,0 +1,37 @@
+type Query {
+    getProductById(id:ID) : ProductResponse
+    getAllProducts(size :Int, sort : String, page: Int,direction: String) : PageableResponseProduct
+    getShiftById(id:String) : Shift
+    getAllShifts(size :Int, sort : String, page: Int,direction: String) : PageableResponseShift
+}
+
+type ProductResponse{
+    id: ID
+    name: String
+    description : String
+    imageUrl: String
+    priceARS : Float
+    priceUSD : Float
+    enabled : Boolean
+}
+
+type PageableResponseProduct{
+    content : [ProductResponse]
+    totalPages : Int
+    totalElements : Int
+    size : Int
+}
+
+type Shift{
+    id : String
+    date : String
+    hour : String
+    isBooked : Boolean
+}
+
+type PageableResponseShift{
+    content : [Shift]
+    totalPages : Int
+    totalElements : Int
+    size : Int
+}

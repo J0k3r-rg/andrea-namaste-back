@@ -1,5 +1,6 @@
 package com.j0k3r.andreanamaste.handlers;
 
+import com.j0k3r.andreanamaste.exceptions.ProductException;
 import com.j0k3r.andreanamaste.exceptions.ProfileItemException;
 import com.j0k3r.andreanamaste.exceptions.ShiftException;
 import com.j0k3r.andreanamaste.exceptions.UserException;
@@ -34,6 +35,16 @@ public class MyHandlers {
 
     @ExceptionHandler(ShiftException.class)
     public ResponseEntity<?> shiftHandlerException(ShiftException ex){
+        return ResponseEntity.status(ex.getCode()).body(
+                Map.of(
+                        "message", ex.getMessage(),
+                        "status", ex.getCode(),
+                        "error", "Bad Request")
+        );
+    }
+
+    @ExceptionHandler(ProductException.class)
+    public ResponseEntity<?> producttHandlerException(ProductException ex){
         return ResponseEntity.status(ex.getCode()).body(
                 Map.of(
                         "message", ex.getMessage(),

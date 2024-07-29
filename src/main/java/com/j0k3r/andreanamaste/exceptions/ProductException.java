@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class ProductException extends Exception{
-    private final int status;
+    private final int code;
 
-    public ProductException(String message, int status) {
+    public ProductException(String message, int code) {
         super(message);
-        this.status = status;
+        this.code = code;
     }
 }

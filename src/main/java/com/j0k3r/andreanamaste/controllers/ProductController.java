@@ -1,5 +1,6 @@
 package com.j0k3r.andreanamaste.controllers;
 
+import com.j0k3r.andreanamaste.exceptions.ProductException;
 import com.j0k3r.andreanamaste.http.request.ProductRequest;
 import com.j0k3r.andreanamaste.services.ProductService;
 import jakarta.validation.Valid;
@@ -31,7 +32,7 @@ public class ProductController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable String id){
+    public ResponseEntity<?> getProductById(@PathVariable String id) throws ProductException {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 

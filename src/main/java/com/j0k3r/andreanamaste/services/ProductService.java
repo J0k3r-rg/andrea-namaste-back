@@ -1,5 +1,6 @@
 package com.j0k3r.andreanamaste.services;
 
+import com.j0k3r.andreanamaste.exceptions.ProductException;
 import com.j0k3r.andreanamaste.http.request.ProductRequest;
 import com.j0k3r.andreanamaste.http.response.ProductResponse;
 import com.j0k3r.andreanamaste.models.Product;
@@ -24,9 +25,9 @@ public class ProductService {
         return ProductUtils.toProductResponse(product);
     }
 
-    public ProductResponse getProductById(String id){
+    public ProductResponse getProductById(String id) throws ProductException {
         Product product = productRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Product not found with id: " + id)
+                () -> new ProductException("Product not found with id: "+id ,404)
         );
         return ProductUtils.toProductResponse(product);
     }
