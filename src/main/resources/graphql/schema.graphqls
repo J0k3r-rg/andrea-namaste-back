@@ -1,8 +1,13 @@
 type Query {
     getProductById(id:ID) : ProductResponse
-    getAllProducts(size :Int, sort : String, page: Int,direction: String) : PageableResponseProduct
+    getAllProducts(
+        size :Int,
+        sorts : [String],
+        page: Int,
+        direction: String) : PageableResponseProduct
     getShiftById(id:String) : Shift
-    getAllShifts(size :Int, sort : String, page: Int,direction: String) : PageableResponseShift
+    getAllShifts(size :Int, sorts : [String], page: Int,direction: String) : PageableResponseShift
+    getShiftByDateFree(day:Int, month : Int, year : Int) : ResponseClientShift
 }
 
 type ProductResponse{
@@ -19,7 +24,7 @@ type PageableResponseProduct{
     content : [ProductResponse]
     totalPages : Int
     totalElements : Int
-    size : Int
+    pageable : Pageable
 }
 
 type Shift{
@@ -29,9 +34,29 @@ type Shift{
     isBooked : Boolean
 }
 
+type ShiftClient{
+    id: String
+    hour : String
+}
+
 type PageableResponseShift{
     content : [Shift]
     totalPages : Int
     totalElements : Int
-    size : Int
+    pageable : Pageable
+}
+
+type ResponseClientShift{
+    content : [ShiftClient]
+    error : ErrorResponse
+}
+
+type Pageable{
+    pageNumber : Int
+    pageSize: Int
+}
+
+type ErrorResponse{
+    status : Int
+    message : String
 }
