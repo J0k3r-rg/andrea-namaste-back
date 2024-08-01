@@ -32,5 +32,8 @@ public class Reservation {
 
     @Builder.Default
     private Boolean isPaid = false;
+
+    @Builder.Default
+    private Boolean finallyShift = false;
     
 }

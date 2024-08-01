@@ -21,6 +21,11 @@ public class ReservationService {
     private ReservationUtils reservationUtils;
 
     public ReservationResponse createReservation(ReservationRequest reservationRequest) throws ShiftException, UserException, ProductException {
+
+        if(reservationRepository.existsByIsPaidOrFinallyShiftAndUserId(false,false,reservationRequest.getUserId())){
+            throw new ShiftException("Usted ya tiene un turno reservado",500);
+        }
+
         Reservation reservation = reservationUtils.toReservation(reservationRequest);
         reservationRepository.save(reservation);
         return reservationUtils.toReservationResponse(reservation);

@@ -12,6 +12,7 @@ import com.j0k3r.andreanamaste.repositories.ProductRepository;
 import com.j0k3r.andreanamaste.repositories.ShiftRepository;
 import com.j0k3r.andreanamaste.security.models.User;
 import com.j0k3r.andreanamaste.security.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,6 +28,7 @@ public class ReservationUtils {
     @Autowired
     private ProductRepository productRepository;
 
+    @Transactional
     public Reservation toReservation(ReservationRequest reservationRequest) throws UserException, ShiftException, ProductException {
         User user = userRepository.findById(reservationRequest.getUserId()).orElseThrow(
                 () -> new UserException("Usuario no encontrado",400)
@@ -37,6 +39,7 @@ public class ReservationUtils {
         Product product = productRepository.findById(reservationRequest.getProductId()).orElseThrow(
                 () -> new ProductException("Producto no encontrado",400)
         );
+        shift.setIsBooked(true);
         return Reservation.builder()
                 .user(user)
                 .shift(shift)
