@@ -8,6 +8,7 @@ import com.j0k3r.andreanamaste.http.response.ReservationResponse;
 import com.j0k3r.andreanamaste.models.Reservation;
 import com.j0k3r.andreanamaste.repositories.ReservationRepository;
 import com.j0k3r.andreanamaste.utils.ReservationUtils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +21,15 @@ public class ReservationService {
     @Autowired
     private ReservationUtils reservationUtils;
 
+    @Transactional
     public ReservationResponse createReservation(ReservationRequest reservationRequest) throws ShiftException, UserException, ProductException {
 
         if(reservationRepository.existsByIsPaidOrFinallyShiftAndUserId(false,false,reservationRequest.getUserId())){
             throw new ShiftException("Usted ya tiene un turno reservado",500);
         }
 
-        Reservation reservation = reservationUtils.toReservation(reservationRequest);
-        reservationRepository.save(reservation);
+        Reservation reservation = reservationRepository.save(reservationUtils.toReservation(reservationRequest));
+        reservation.getShift().setIsBooked(true);
         return reservationUtils.toReservationResponse(reservation);
     }
 
