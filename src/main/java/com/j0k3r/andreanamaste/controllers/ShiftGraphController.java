@@ -7,6 +7,7 @@ import com.j0k3r.andreanamaste.http.response.ShiftResponse;
 import com.j0k3r.andreanamaste.services.ShiftService;
 import com.j0k3r.andreanamaste.utils.PageableUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -22,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ShiftGraphController {
 
+    @Autowired
     private ShiftService shiftService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

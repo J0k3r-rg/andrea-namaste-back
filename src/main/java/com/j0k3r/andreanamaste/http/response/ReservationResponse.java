@@ -13,6 +13,8 @@ public class ReservationResponse {
 
     private String id;
 
+    private UserResponse user;
+
     private ShiftResponse shift;
 
     private ProductResponse product;

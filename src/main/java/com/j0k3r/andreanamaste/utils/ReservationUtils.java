@@ -31,13 +31,13 @@ public class ReservationUtils {
     @Transactional
     public Reservation toReservation(ReservationRequest reservationRequest) throws UserException, ShiftException, ProductException {
         User user = userRepository.findById(reservationRequest.getUserId()).orElseThrow(
-                () -> new UserException("Usuario no encontrado",400)
+                () -> new UserException("Usuario no encontrado", 400)
         );
         Shift shift = shiftRepository.findById(reservationRequest.getShiftId()).orElseThrow(
-                () -> new ShiftException("Turno no encontrado",400)
+                () -> new ShiftException("Turno no encontrado", 400)
         );
         Product product = productRepository.findById(reservationRequest.getProductId()).orElseThrow(
-                () -> new ProductException("Producto no encontrado",400)
+                () -> new ProductException("Producto no encontrado", 400)
         );
         shift.setIsBooked(true);
         return Reservation.builder()
@@ -47,11 +47,12 @@ public class ReservationUtils {
                 .build();
     }
 
-    public ReservationResponse toReservationResponse(Reservation reservation) {
+    public static ReservationResponse toReservationResponse(Reservation reservation) {
         return ReservationResponse.builder()
                 .id(reservation.getId())
                 .isPaid(reservation.getIsPaid())
                 .urlMeet(reservation.getUrlMeet())
+                .user(UserUtils.toUserResponse(reservation.getUser()))
                 .product(ProductUtils.toProductResponse(reservation.getProduct()))
                 .shift(ShiftUtils.toShiftResponse(reservation.getShift()))
                 .build();

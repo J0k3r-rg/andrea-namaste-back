@@ -3,7 +3,6 @@ package com.j0k3r.andreanamaste.controllers;
 import com.j0k3r.andreanamaste.controllers.filters.shiftfilters.ShiftValidation;
 import com.j0k3r.andreanamaste.controllers.filters.shiftfilters.ShiftValidationRange;
 import com.j0k3r.andreanamaste.exceptions.ShiftException;
-import com.j0k3r.andreanamaste.http.request.DateRequest;
 import com.j0k3r.andreanamaste.http.request.ShiftCreateRange;
 import com.j0k3r.andreanamaste.http.request.ShiftRequest;
 import com.j0k3r.andreanamaste.services.ShiftService;

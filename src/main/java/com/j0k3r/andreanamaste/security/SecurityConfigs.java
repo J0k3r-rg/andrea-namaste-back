@@ -32,7 +32,8 @@ public class SecurityConfigs {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(HttpMethod.POST,
                                         "/login","/api/v1/user/register",
-                                        "/graphql"
+                                        "/graphql",
+                                        "/webhook"
                                 ).permitAll()
                                 .requestMatchers(HttpMethod.GET,
                                         "/api/v1/user/activate",
@@ -40,7 +41,8 @@ public class SecurityConfigs {
                                         "/api/v1/profile/admin/item/**",
                                         "/api/v1/shift",
                                         "/api/v1/products/id",
-                                        "/graphiql**"
+                                        "/graphiql**",
+                                        "/webhook"
                                 ).permitAll()
                                 .anyRequest().authenticated()
                 )
