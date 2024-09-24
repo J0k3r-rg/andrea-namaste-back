@@ -13,6 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -89,6 +92,13 @@ public class UserController {
     @GetMapping("/actually-token")
     public ResponseEntity<?> actuallyToken(@RequestBody String token) {
         //return ResponseEntity.ok(userService.actuallyToken(token));
+        return ResponseEntity.ok("Success");
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/check_admin")
+    public ResponseEntity<?> checkAdmin() {
         return ResponseEntity.ok("Success");
     }
 
